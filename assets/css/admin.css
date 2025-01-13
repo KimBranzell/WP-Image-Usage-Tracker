@@ -1,0 +1,216 @@
+.iut-usage-count {
+  font-weight: bold;
+  color: #0073aa;
+}
+
+.iut-no-usage {
+  color: #ca4a1f;
+}
+
+.iut-scan-image {
+  color: #0073aa;
+  cursor: pointer;
+}
+
+.iut-scanning {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.iut-usage-list {
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iut-usage-list li {
+  margin: 5px 0;
+  padding: 5px 10px;
+  background: #f8f9fa;
+  border-left: 3px solid #0073aa;
+}
+
+.iut-usage-details {
+  background: #fff;
+}
+
+/* Main table styling */
+.iut-usage-list {
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iut-usage-list li {
+  margin: 5px 0;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-left: 3px solid #0073aa;
+  font-size: 13px;
+}
+
+/* Table row styling */
+.wp-list-table td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+/* Image column */
+.wp-list-table img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 3px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Usage details row */
+.iut-usage-details {
+  background: #fbfbfb;
+}
+
+.iut-usage-details td {
+  padding: 0 15px 15px;
+}
+
+/* Count styling */
+.usage-count {
+  font-weight: 600;
+  color: #2271b1;
+}
+
+/* Action button styling */
+.iut-scan-image {
+  min-width: 80px;
+}
+
+/* Top action area */
+.tablenav.top {
+  margin: 15px 0;
+}
+
+/* Remove default striping */
+.wp-list-table.widefat.fixed.striped {
+  border-collapse: separate;
+  background: transparent;
+}
+
+/* Style each image group */
+.wp-list-table tr:not(.iut-usage-details) {
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Usage details styling */
+.iut-usage-details {
+  background: rgba(0,0,0,0.05);
+  margin-bottom: 15px;
+}
+
+.iut-usage-details td {
+  padding: 15px;
+  border-top: none;
+}
+
+/* List styling within the usage details */
+.iut-usage-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #f0f0f0;
+}
+
+.iut-usage-list li {
+  margin: 0;
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.iut-usage-list li:hover {
+  background: #f8f9fa;
+}
+
+.iut-table tr {
+  border-spacing: 0;
+}
+
+.tablenav-pages {
+  float: right;
+  margin: 20px 0;
+}
+
+.tablenav-pages .page-numbers {
+  display: inline-block;
+  min-width: 28px;
+  padding: 4px 8px;
+  margin: 0 2px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background: #f7f7f7;
+  text-align: center;
+  text-decoration: none;
+}
+
+.tablenav-pages .page-numbers.current {
+  border-color: #2271b1;
+  background: #2271b1;
+  color: #fff;
+}
+
+.search-box {
+  float: right;
+  margin: 0;
+}
+
+.search-box input[type="search"] {
+  margin-right: 5px;
+  width: 200px;
+}
+
+/* Clear float after the top navigation */
+.tablenav.top:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.search-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.clear-search {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  text-decoration: none;
+  color: #666;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: bold;
+}
+
+.clear-search:hover {
+  color: #d63638;
+}
+
+.search-box input[type="search"] {
+  padding-right: 25px;
+}
+
+.iut-attachment-usage {
+  margin: 10px 0;
+}
+
+.iut-attachment-usage .iut-usage-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.media-modal .iut-usage-list li {
+  margin: 5px 0;
+  padding: 8px 10px;
+}
