@@ -63,12 +63,10 @@ class Core {
     private function init_auto_tracking_hooks() {
         // Post/Page/CPT saves
         add_action('save_post', [$this, 'track_on_content_save'], 999, 3);
+        add_action('acf/save_post', [$this, 'track_acf_changes'], 20);
 
-        // Also catch Gutenberg saves
-        add_action('rest_after_insert_post', [$this, 'track_on_content_save'], 999, 3);
-        add_action('transition_post_status', [$this, 'track_on_status_change'], 999, 3);
-        add_action('rest_after_insert_post', [$this, 'track_on_content_save'], 999, 3);
-        add_action('rest_after_save_widget', [$this, 'track_on_content_save'], 999, 3);
+        // Remove other content save hooks that might interfere
+        remove_action('save_post', [$this, 'track_on_content_save']);
 
         // When switching themes (for customizer usage)
         add_action('after_switch_theme', [$this, 'track_all_images']);
@@ -79,9 +77,6 @@ class Core {
 
         // Menu item updates (for menu images)
         add_action('wp_update_nav_menu', [$this, 'track_menu_changes']);
-
-        // ACF field updates
-        add_action('acf/save_post', [$this, 'track_acf_changes'], 20);
     }
 
 
@@ -103,6 +98,11 @@ class Core {
     }
 
     public function track_acf_changes($post_id) {
+        error_log('=== Starting ACF tracking ===');
+        error_log('Action: ' . current_action());
+        error_log('Priority: ' . current_filter());
+        error_log('Backtrace: ' . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), true));
+
         if (!function_exists('get_fields')) {
             return;
         }
@@ -145,6 +145,11 @@ class Core {
 
 
     public function track_on_content_save($post_id, $post = null, $update = null) {
+        error_log('Track on content save triggered for post: ' . print_r($post_id, true));
+
+        // Initialize array for all image IDs
+        $current_image_ids = [];
+
         // Get post object if needed
         if ($post instanceof \WP_Post) {
             $post_id = $post->ID;
@@ -154,21 +159,16 @@ class Core {
             $content = $post ? $post->post_content : '';
         }
 
-        if (empty($content)) {
-            return;
-        }
-
-        // First, get all current images in this post
+        // Get images from content
         $pattern = '/(?:wp-image-(\d+)|"id":(\d+).*?"type":"core\/image")/';
         preg_match_all($pattern, $content, $matches);
-
-        // Get unique image IDs from current content
-        $current_image_ids = array_unique(array_merge(
+        $current_image_ids = array_merge(
+            $current_image_ids,
             array_filter($matches[1]),
             array_filter($matches[2])
-        ));
+        );
 
-        // Get previously tracked images for this post
+        // Get previously tracked images
         global $wpdb;
         $previous_images = $wpdb->get_col($wpdb->prepare(
             "SELECT DISTINCT image_id FROM {$wpdb->prefix}image_usage
@@ -198,6 +198,30 @@ class Core {
         // Handle featured image
         if (has_post_thumbnail($post_id)) {
             $this->tracker->track_image(get_post_thumbnail_id($post_id));
+        }
+    }
+
+
+    private function extract_image_ids_from_acf($fields, &$current_image_ids) {
+        foreach ($fields as $field_name => $field_value) {
+            error_log('Processing field: ' . $field_name);
+            error_log('Field value: ' . print_r($field_value, true));
+
+            // Direct image field (like testbildsfalt)
+            if (isset($field_value['ID'])) {
+                error_log('Found image ID in direct field: ' . $field_value['ID']);
+                $current_image_ids[] = $field_value['ID'];
+            }
+            // Group field (like testgrupp)
+            elseif (is_array($field_value)) {
+                foreach ($field_value as $sub_field_name => $sub_field) {
+                    error_log('Processing sub-field: ' . $sub_field_name);
+                    if (isset($sub_field['ID'])) {
+                        error_log('Found image ID in sub-field: ' . $sub_field['ID']);
+                        $current_image_ids[] = $sub_field['ID'];
+                    }
+                }
+            }
         }
     }
 

@@ -202,6 +202,18 @@ class Admin {
 
         if ($item->post_id) {
             $post = get_post($item->post_id);
+
+            // Special handling for ACF fields
+            if ($item->usage_type === 'acf_field' && isset($location['field_name'])) {
+                return sprintf(
+                    '%s: <a href="%s">%s</a> (Field: %s)',
+                    ucfirst($item->usage_type),
+                    get_edit_post_link($item->post_id),
+                    $post->post_title,
+                    $location['field_name']
+                );
+            }
+
             return sprintf(
                 '%s: <a href="%s">%s</a>',
                 ucfirst($item->usage_type),

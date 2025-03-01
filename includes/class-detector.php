@@ -168,14 +168,16 @@ class Detector {
 
       $results = $wpdb->get_results($query);
 
-      foreach ($results as $post) {
-          $usage[] = [
-              'post_id' => $post->ID,
-              'post_type' => $post->post_type,
-              'post_title' => $post->post_title,
-              'usage_type' => 'gallery'
-          ];
-      }
+        if($results) {
+            foreach ($results as $post) {
+                $usage[] = [
+                    'post_id' => $post->ID,
+                    'post_type' => $post->post_type,
+                    'post_title' => $post->post_title,
+                    'usage_type' => 'gallery'
+                ];
+            }
+        }
 
       return $usage;
     }
